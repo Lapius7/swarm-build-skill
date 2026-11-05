@@ -8,7 +8,7 @@ const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const ease = Easing.bezier(0.22, 1, 0.36, 1);
 const p01 = (f: number, a: number, b: number) => interpolate(f, [a, b], [0, 1], {...clamp, easing: ease});
 
-const INTRO = 120; // 点の列と「Build now」
+const INTRO = 120; // 冒頭の長さ（点の列と題名）
 const OVERLAP = 10;
 const OUTRO = 120;
 const starts: number[] = [];
@@ -37,18 +37,16 @@ const Caption: React.FC<{lines: string[]; sub?: string; at: number}> = ({lines, 
   );
 };
 
-// 小さな点の列と「Build now」ボタン。ボタンが押されて組み上げが始まる。
+// 冒頭: 色つきの点の列と、題名。ここは自由に作り替えてよい。
 const Intro: React.FC = () => {
   const f = useCurrentFrame();
   const op = p01(f, 0, 14);
-  const press = interpolate(f, [88, 92, 98], [1, 0.92, 1], clamp);
   return (
     <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', fontFamily: FONT, color: '#fff'}}>
-      <div style={{position: 'absolute', top: 420, fontSize: 20, color: '#a1a1aa', opacity: op}}>{COLORS.length} subagents</div>
       <div style={{position: 'absolute', top: 470, display: 'flex', gap: 10, opacity: op}}>
         {COLORS.map((c, i) => <div key={c} style={{width: 8, height: 8, borderRadius: 8, background: c, transform: `translateY(${Math.sin((f + i * 4) / 5) * 4}px)`}} />)}
       </div>
-      <div style={{padding: '14px 34px', borderRadius: 999, background: '#f5f5f5', color: '#111', fontSize: 28, fontWeight: 600, transform: `scale(${press})`, opacity: op, marginTop: 120}}>Build now</div>
+      <div style={{fontSize: 96, fontWeight: 700, letterSpacing: -3, opacity: op, marginTop: 70}}>{TITLE}</div>
     </AbsoluteFill>
   );
 };
