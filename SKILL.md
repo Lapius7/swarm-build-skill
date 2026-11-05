@@ -19,7 +19,7 @@ description: Webページや画面の実物を、複数色のカーソルが枠�
   1. カーソルが要素の左上から右下へ動き、同じ色の枠が伸びる（約13フレーム）。
   2. 枠の中で文字が左から段階的に現れ、先端に細い線が付く。
   3. 打ち終わると枠が薄くなって消え、要素だけが残る。
-- 56px未満の小さな要素は、打たずに拡大してポンと出す。
+- 56px未満の小さな要素は打たずに拡大してポンと出す。
 - 担当が終わったカーソルは画面から消えず、しばらくうろうろして薄れる。
 - 担当は空いているカーソルへ順に渡す。1つのカーソルが同時に2つの要素を持たない。
 - ページは組み上がる位置に合わせて下へスクロールし、カメラは拡大率とスクロール量を場面ごとにゆっくり動かす。
@@ -28,11 +28,11 @@ description: Webページや画面の実物を、複数色のカーソルが枠�
 
 ## 手順
 
-1. **プロジェクトを作る。** このリポジトリの `template/` を `~/projects/<名前>` にコピーし、`pnpm install` する。
-2. **画面を撮る。** `node scripts/capture.mjs home=<URL> detail=<URL> ...` を実行する。`public/<名前>.png`、`src/data/<名前>.json`、`src/data/index.ts` が出る。ブラウザは `CHROME_PATH` で指定できる。
-3. **場面を並べる。** `src/scenes.ts` を編集する（`BuildPage` の引数は下表）。題名、URL、ひとこと説明も同じファイルにある。
-4. **確かめる。** `pnpm still` で静止画を、`pnpm render` で `out/pv.mp4` を書き出す。Remotion の Chrome が動かないときは `REMOTION_BROWSER` に手元のブラウザを指定する。
-5. **届ける。** 動画を `~/Downloads` などに置く。音は ffmpeg の合成環境音を重ねる（`references/tuning.md`）。
+1. プロジェクトを作る。このリポジトリの `template/` を `~/projects/<名前>` にコピーし、`pnpm install` する。
+2. 画面を撮る。`node scripts/capture.mjs home=<URL> detail=<URL> ...` を実行する。`public/<名前>.png`、`src/data/<名前>.json`、`src/data/index.ts` が出る。ブラウザは `CHROME_PATH` で指定できる。
+3. 場面を並べる。`src/scenes.ts` を編集する（`BuildPage` の引数は下表）。題名、URL、ひとこと説明も同じファイルにある。
+4. 確かめる。`pnpm still` で静止画を、`pnpm render` で `out/pv.mp4` を書き出す。Remotion の Chrome が動かないときは `REMOTION_BROWSER` に手元のブラウザを指定する。
+5. 届ける。動画を `~/Downloads` などに置く。音は ffmpeg の合成環境音を重ねる（`references/tuning.md`）。
 
 | 引数 | 役割 |
 |---|---|
