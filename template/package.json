@@ -1,11 +1,13 @@
 {
   "name": "swarm-build-project",
   "private": true,
+  "version": "1.0.0",
   "scripts": {
     "capture": "node scripts/capture.mjs",
     "studio": "remotion studio",
     "still": "remotion still src/index.ts PV out/still.png --frame=120",
-    "render": "remotion render src/index.ts PV out/pv.mp4"
+    "render": "remotion render src/index.ts PV out/pv.mp4",
+    "stills": "node scripts/stills.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.250",

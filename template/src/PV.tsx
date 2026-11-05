@@ -9,16 +9,20 @@ const ease = Easing.bezier(0.22, 1, 0.36, 1);
 const p01 = (f: number, a: number, b: number) => interpolate(f, [a, b], [0, 1], {...clamp, easing: ease});
 
 const INTRO = 120; // 冒頭の長さ（点の列と題名）
-const OVERLAP = 10;
+const OVERLAP = 18; // 場面の切り替え（フェードの長さと同じ）
+const VIEW = 70; // 組み上がったあと、利用者が見られる最低の長さ（フレーム）
 const OUTRO = 120;
 const starts: number[] = [];
 let acc = INTRO - OVERLAP;
-for (const s of scenes) { starts.push(acc); acc += s.dur - OVERLAP; }
+const durOf = (s: (typeof scenes)[number]) => Math.max(s.dur, s.buildEnd + VIEW); // 短すぎる場面は自動で延ばす
+for (const s of scenes) { starts.push(acc); acc += durOf(s) - OVERLAP; }
 export const DURATION = acc + OVERLAP + OUTRO - OVERLAP;
 
 const Scene: React.FC<{dur: number; children: React.ReactNode}> = ({dur, children}) => {
   const f = useCurrentFrame();
-  return <AbsoluteFill style={{opacity: Math.min(p01(f, 0, 10), 1 - p01(f, dur - 10, dur))}}>{children}</AbsoluteFill>;
+  // ぱっと消えないよう、出入りでぼかし・縮尺・透明度を動かす
+  const inP = p01(f, 0, OVERLAP), outP = p01(f, dur - OVERLAP, dur);
+  return <AbsoluteFill style={{opacity: Math.min(inP, 1 - outP), transform: `scale(${0.97 + inP * 0.03 + outP * 0.04})`, filter: `blur(${(1 - inP) * 10 + outP * 12}px)`}}>{children}</AbsoluteFill>;
 };
 
 const Caption: React.FC<{lines: string[]; sub?: string; at: number}> = ({lines, sub, at}) => {
@@ -26,7 +30,7 @@ const Caption: React.FC<{lines: string[]; sub?: string; at: number}> = ({lines, 
   return (
     <>
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 520, background: 'linear-gradient(transparent, #0b0b0c 85%)', zIndex: 40}} />
-      <div style={{position: 'absolute', left: 90, bottom: 70, zIndex: 50, fontFamily: FONT, color: '#fff'}}>
+      <div style={{position: 'absolute', left: 90, bottom: 70, zIndex: 50, fontFamily: FONT, color: '#fff', textShadow: '0 4px 30px #000'}}>
         {lines.map((l, i) => {
           const p = p01(f, at + i * 5, at + 20 + i * 5);
           return <div key={l} style={{fontSize: 76, fontWeight: 700, letterSpacing: -3, lineHeight: 1.02, opacity: p, transform: `translateY(${(1 - p) * 40}px)`, filter: `blur(${(1 - p) * 10}px)`}}>{l}</div>;
@@ -68,10 +72,11 @@ export const PV: React.FC = () => (
     <Sequence from={0} durationInFrames={INTRO}><Scene dur={INTRO}><Intro /></Scene></Sequence>
     {scenes.map((s, i) => {
       const d = pages[s.page] as {data: PageData; img: string};
+      const dur = durOf(s);
       return (
-        <Sequence key={s.page + i} from={starts[i]} durationInFrames={s.dur}>
-          <Scene dur={s.dur}>
-            <BuildPage img={d.img} data={d.data} dur={s.dur} cursors={s.cursors} cam={s.cam} buildStart={4} buildEnd={s.buildEnd} order={s.order} />
+        <Sequence key={s.page + i} from={starts[i]} durationInFrames={dur}>
+          <Scene dur={dur}>
+            <BuildPage img={d.img} data={d.data} dur={dur} cursors={s.cursors} cam={s.cam} buildStart={4} buildEnd={s.buildEnd} order={s.order} />
             {s.caption && <Caption lines={s.caption.lines} sub={s.caption.sub} at={Math.round(s.buildEnd * 0.4)} />}
           </Scene>
         </Sequence>
