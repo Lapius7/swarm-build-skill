@@ -71,8 +71,8 @@ export const BuildPage: React.FC<{img: string; data: PageData; dur: number; curs
       const last = mine[mine.length - 1];
       if (k === mine.length - 1 && f > last.t + last.d + last.T + 4) {
         const idle = f - (last.t + last.d + last.T + 4);
-        pos = [pos[0] + Math.sin(idle / 9 + c) * 90 + idle * (hash(c) - 0.5) * 4, pos[1] + Math.cos(idle / 11 + c * 2) * 70 + idle * 2.5];
-        op *= 1 - p01(f, last.t + 80, last.t + 110);
+        pos = [pos[0] + idle * 1.2, pos[1] - idle * 0.8];
+        op *= 1 - p01(f, last.t + last.d + last.T + 4, last.t + last.d + last.T + 18);
       }
     }
     return op > 0.01 ? <Cursor key={c} x={pos[0]} y={pos[1]} color={COLORS[c % 12]} label={NAMES[c % 12]} op={op} inv={1 / s} /> : null;
