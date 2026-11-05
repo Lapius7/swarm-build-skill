@@ -30,10 +30,13 @@
 
 ## 導入
 
+次の1行で `~/.claude/skills/swarm-build` に入ります。再実行すると更新します。Private の間は、`gh` にログインしている必要があります。
+
 ```sh
-git clone https://github.com/Lapius7/swarm-build-skill ~/projects/swarm-build-skill
-ln -s ~/projects/swarm-build-skill ~/.claude/skills/swarm-build
+gh api repos/Lapius7/swarm-build-skill/contents/install.sh -H 'Accept: application/vnd.github.raw' | bash
 ```
+
+公開したあとは、`curl -fsSL https://raw.githubusercontent.com/Lapius7/swarm-build-skill/main/install.sh | bash` でも入ります。
 
 Claude Code で「このサイトのスウォームビルドのPVを作って」のように頼むと、スキルが使われます。
 
