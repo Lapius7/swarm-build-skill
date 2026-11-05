@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # swarm-build スキルを ~/.claude/skills/swarm-build に入れる。再実行で更新する。
-# 使い方: gh api repos/Lapius7/swarm-build-skill/contents/install.sh -H 'Accept: application/vnd.github.raw' | bash
+# 使い方: curl -fsSL https://raw.githubusercontent.com/Lapius7/swarm-build-skill/main/install.sh | bash
 set -euo pipefail
 REPO="Lapius7/swarm-build-skill"
 DEST="${SKILLS_DIR:-$HOME/.claude/skills}/swarm-build"

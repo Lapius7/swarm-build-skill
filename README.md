@@ -1,5 +1,7 @@
 # swarm-build-skill
 
+日本語 | [English](README.en.md)
+
 色違いのカーソルが群れで動き、ページの実物に枠を描いて文字を打ち込みながら組み上げていく動画を、[Remotion](https://www.remotion.dev/) で作る Claude Code 用スキルです。この演出を**スウォームビルド**と呼びます。
 
 ## できること
@@ -26,17 +28,17 @@
 | `template/src/scenes.ts` | 場面の一覧。ここを編集する |
 | `template/scripts/capture.mjs` | 画面を撮り、要素の座標を出す |
 | `references/tuning.md` | 長さ、音、ブラウザの調整メモ |
-| `references/PV.vulns-example.tsx` | 実際の PV で使った構成の例 |
+| `references/scenes.example.ts` | 場面の記入例（カメラ、カーソル数、順番の変え方） |
 
 ## 導入
 
-次の1行で `~/.claude/skills/swarm-build` に入ります。再実行すると更新します。Private の間は、`gh` にログインしている必要があります。
+次の1行で `~/.claude/skills/swarm-build` に入ります。再実行すると更新します。
 
 ```sh
-gh api repos/Lapius7/swarm-build-skill/contents/install.sh -H 'Accept: application/vnd.github.raw' | bash
+curl -fsSL https://raw.githubusercontent.com/Lapius7/swarm-build-skill/main/install.sh | bash
 ```
 
-公開したあとは、`curl -fsSL https://raw.githubusercontent.com/Lapius7/swarm-build-skill/main/install.sh | bash` でも入ります。
+`git` が要ります。`gh` があればそれで clone します。
 
 Claude Code で「このサイトのスウォームビルドのPVを作って」のように頼むと、スキルが使われます。
 

@@ -53,4 +53,4 @@ description: Webページや画面の実物を、複数色のカーソルが枠�
 - キャプションは本文と重なりやすい。重ねるなら下に暗いグラデーションを敷き、付けるかは利用者に確かめる。
 - 撮る相手は自分のサイトか、撮影を許可されたものに限る。
 
-詳しい調整は `references/tuning.md`、使用例は `references/PV.vulns-example.tsx`。
+詳しい調整は `references/tuning.md`、場面の記入例は `references/scenes.example.ts`。
