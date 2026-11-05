@@ -25,13 +25,13 @@ export const BuildPage: React.FC<{img: string; data: PageData; dur: number; curs
     const plan = (k: number) => {
       const gap = (end - buildStart - 30) / Math.max(1, sorted.length);
       const free = Array(Math.max(1, cursors)).fill(buildStart);
-      const d = Math.max(6, Math.round(13 * k));
+      const d = Math.max(5, Math.round(13 * k));
       let last = 0;
       const list: Job[] = sorted.map((b, i) => {
         let c = 0;
         for (let q = 1; q < free.length; q++) if (free[q] < free[c]) c = q;
         const pop = b.w < 56 && b.h < 56;
-        const T = pop ? 4 : Math.max(4, Math.round(Math.min(16, Math.max(5, b.w / 22)) * k));
+        const T = pop ? 4 : Math.max(3, Math.round(Math.min(16, Math.max(5, b.w / 22)) * k));
         const t = Math.max(buildStart + i * gap * 0.9, free[c]);
         free[c] = t + d + T + 4;
         last = Math.max(last, t + d + T + 8);
@@ -40,7 +40,7 @@ export const BuildPage: React.FC<{img: string; data: PageData; dur: number; curs
       return {jobs: list, done: last};
     };
     let r = plan(1);
-    for (const k of [0.85, 0.7, 0.6, 0.5, 0.42]) { if (r.done <= end) break; r = plan(k); }
+    for (const k of [0.85, 0.7, 0.6, 0.5, 0.42, 0.34, 0.28]) { if (r.done <= end) break; r = plan(k); }
     return r;
   }, [data, cursors, end, buildStart, mode, order]);
 

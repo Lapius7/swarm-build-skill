@@ -39,10 +39,12 @@ for (const [name, url] of targets) {
   await page.screenshot({path: `public/${name}.png`});
   const boxes = await page.evaluate(() => {
     const sel = 'h1,h2,h3,p,a,button,input,select,tr,li,svg,canvas,img,label,[role=tab],[class*=card],[class*=badge]';
-    const els = [...document.querySelectorAll(sel)].map(e => ({e, r: e.getBoundingClientRect()}))
+    const leaf = [...document.querySelectorAll('span,div,td,dt,dd')].filter(e => e.children.length === 0 && (e.textContent || '').trim());
+    const els = [...new Set([...document.querySelectorAll(sel), ...leaf])].map(e => ({e, r: e.getBoundingClientRect()}))
       .filter(({r}) => r.width > 24 && r.height > 12 && r.top >= 0 && r.bottom <= innerHeight && r.width < innerWidth * 0.98);
     // 他の選んだ要素を含む親は外し、いちばん内側の要素を残す（tr は残す）
     return els.filter(a => !els.some(b => b !== a && a.e !== b.e && a.e.contains(b.e) && a.e.tagName !== 'TR'))
+      .concat([...document.querySelectorAll('div,span')].filter(d => { const r = d.getBoundingClientRect(); const c = d.firstElementChild; return r.height >= 4 && r.height <= 20 && r.width > 60 && r.top >= 0 && r.bottom <= innerHeight && c && d.children.length === 1 && /%/.test(c.getAttribute('style') || '') && c.getBoundingClientRect().height >= r.height - 2; }).map(d => ({r: d.getBoundingClientRect()})))
       .map(({r}) => ({x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height)}));
   });
   fs.writeFileSync(`src/data/${name}.json`, JSON.stringify({w: W, h: H, boxes}));
