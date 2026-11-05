@@ -37,7 +37,7 @@ export const BuildPage: React.FC<{img: string; data: PageData; dur: number; curs
   const s = interpolate(f, [0, dur], cam.s, {...clamp, easing: Easing.inOut(Easing.cubic)});
   const ty = interpolate(f, [0, dur], cam.y, {...clamp, easing: Easing.inOut(Easing.cubic)});
   const tx = (1920 - data.w * s * fit) / 2 + (cam.x ? interpolate(f, [0, dur], cam.x, clamp) : 0);
-  const baseOp = p01(f, buildStart + (end - buildStart) * 0.8, end + 14);
+  const baseOp = p01(f, end, end + 14);
 
   const cursorEls = Array.from({length: cursors}, (_, c) => {
     const mine = jobs.filter(j => j.c === c);
