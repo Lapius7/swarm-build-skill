@@ -4,6 +4,12 @@
 
 A Claude Code skill that makes videos with [Remotion](https://www.remotion.dev/) in which multi-coloured cursors swarm over a real web page, draw a box around each element, type its text inside, and build the page up piece by piece. The effect is called **Swarm Build**.
 
+## Example
+
+The PV for [vulns.lapius7.com](https://vulns.lapius7.com), made with this skill (click the image to play the mp4).
+
+[![PV for vulns.lapius7.com](docs/example.gif)](https://vulns.lapius7.com/pv.mp4)
+
 ## How it looks
 
 1. A cursor draws a box around an element.

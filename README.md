@@ -4,6 +4,12 @@
 
 色違いのカーソルが群れで動き、ページの実物に枠を描いて文字を打ち込みながら組み上げていく動画を、[Remotion](https://www.remotion.dev/) で作る Claude Code 用スキルです。この演出を**スウォームビルド**と呼びます。
 
+## 使用例
+
+[vulns.lapius7.com](https://vulns.lapius7.com) の PV を、このスキルで作りました（画像をクリックすると mp4 を再生します）。
+
+[![vulns.lapius7.com の PV](docs/example.gif)](https://vulns.lapius7.com/pv.mp4)
+
 ## できること
 
 - Web ページを撮影し、要素の座標を取って、組み上がる動画にする
