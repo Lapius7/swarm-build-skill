@@ -9,7 +9,7 @@ const p01 = (f: number, a: number, b: number) => interpolate(f, [a, b], [0, 1], 
 export const COLORS = ['#3b82f6', '#a855f7', '#14b8a6', '#ec4899', '#f59e0b', '#22c55e', '#ef4444', '#06b6d4', '#eab308', '#8b5cf6', '#f97316', '#84cc16'];
 const NAMES = ['layout', 'type', 'table', 'chart', 'color', 'a11y', 'copy', 'data', 'nav', 'motion', 'icons', 'api'];
 
-export type PageData = {w: number; h: number; boxes: {x: number; y: number; w: number; h: number}[]};
+export type PageData = {w: number; h: number; boxes: {x: number; y: number; w: number; h: number; rad?: number}[]};
 type Cam = {s: [number, number]; y: [number, number]; x?: [number, number]};
 
 type Job = {i: number; c: number; t: number; d: number; T: number; pop: boolean; b: PageData['boxes'][number]};
@@ -96,7 +96,7 @@ export const BuildPage: React.FC<{img: string; data: PageData; dur: number; curs
           const popS = j.pop ? interpolate(typeP, [0, 0.6, 1], [0, 1.25, 1], clamp) : 1;
           return (
             <React.Fragment key={j.i}>
-              <div style={{position: 'absolute', left: bx, top: by, width: bw, height: bh, ...img2, clipPath: j.pop ? undefined : `inset(0 ${(1 - typed) * 100}% 0 0)`, opacity: j.pop ? Math.min(1, typeP * 2) : typed > 0 ? 1 : 0, transform: `scale(${popS})`}} />
+              <div style={{position: 'absolute', left: bx, top: by, width: bw, height: bh, ...img2, borderRadius: j.b.rad || 0, clipPath: j.pop ? undefined : `inset(0 ${(1 - typed) * 100}% 0 0 round ${j.b.rad || 0}px)`, opacity: j.pop ? Math.min(1, typeP * 2) : typed > 0 ? 1 : 0, transform: `scale(${popS})`}} />
               {!j.pop && typed > 0 && typed < 1 && <div style={{position: 'absolute', left: bx + bw * typed, top: by, width: 2 / s, height: bh, background: col}} />}
               <div style={{position: 'absolute', left: bx, top: by, width: bw * draw, height: bh * draw, border: `${1.5 / s}px solid ${col}`, background: `${col}14`, opacity: boxFade, borderRadius: 3}} />
             </React.Fragment>

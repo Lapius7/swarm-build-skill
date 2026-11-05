@@ -36,16 +36,18 @@ for (const [name, url] of targets) {
   const H = Math.min(full, MAXH);
   await page.setViewportSize({width: W, height: H});
   await page.waitForTimeout(500);
+  await page.addStyleTag({content: 'html,body{background:#0b0b0c !important}'});
+  await page.evaluate(() => { for (const e of document.querySelectorAll('body *')) { if (e.children.length > 0 && !['svg','button','select','tr'].includes(e.tagName.toLowerCase())) { e.style.setProperty('background', 'transparent', 'important'); e.style.setProperty('box-shadow', 'none', 'important'); } } });
   await page.screenshot({path: `public/${name}.png`});
   const boxes = await page.evaluate(() => {
     const sel = 'h1,h2,h3,p,a,button,input,select,tr,li,svg,canvas,img,label,[role=tab],[class*=card],[class*=badge]';
-    const leaf = [...document.querySelectorAll('span,div,td,dt,dd')].filter(e => e.children.length === 0 && (e.textContent || '').trim());
+    const leaf = [...document.querySelectorAll('span,div,td,dt,dd')].filter(e => e.children.length === 0 && (e.textContent || '').trim() && !e.closest('button,select,a,label,[role=tab],[class*=badge]'));
     const els = [...new Set([...document.querySelectorAll(sel), ...leaf])].map(e => ({e, r: e.getBoundingClientRect()}))
       .filter(({r}) => r.width > 24 && r.height > 12 && r.top >= 0 && r.bottom <= innerHeight && r.width < innerWidth * 0.98);
     // 他の選んだ要素を含む親は外し、いちばん内側の要素を残す（tr は残す）
     return els.filter(a => !els.some(b => b !== a && a.e !== b.e && a.e.contains(b.e) && a.e.tagName !== 'TR'))
       .concat([...document.querySelectorAll('div,span')].filter(d => { const r = d.getBoundingClientRect(); const c = d.firstElementChild; return r.height >= 4 && r.height <= 20 && r.width > 60 && r.top >= 0 && r.bottom <= innerHeight && c && d.children.length === 1 && /%/.test(c.getAttribute('style') || '') && c.getBoundingClientRect().height >= r.height - 2; }).map(d => ({r: d.getBoundingClientRect()})))
-      .map(({r}) => ({x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height)}));
+      .map(({e, r}) => ({x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height), rad: e ? Math.min(parseFloat(getComputedStyle(e).borderTopLeftRadius) || 0, r.height / 2) : 0}));
   });
   fs.writeFileSync(`src/data/${name}.json`, JSON.stringify({w: W, h: H, boxes}));
   console.log(`${name}: ${W}x${H}, ${boxes.length} 要素`);
